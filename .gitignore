@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.suo
+*.user
+
+# OS
+.DS_Store
+Thumbs.db
+
+# System folders
+.sf/
+
+# Experiment results (optional: comment out nếu muốn push kết quả)
+experiments/results/*.csv
+experiments/results/*.png
+experiments/results/*.jpg
