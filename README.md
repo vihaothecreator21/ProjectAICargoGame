@@ -1,111 +1,29 @@
-Project AI Caro Arena (5x5 - Thắng 4)
+AI Caro Arena (5x5 - Thắng 4)
 
-Dự án môn học Trí tuệ Nhân tạo: Xây dựng trò chơi Caro người-máy và khảo sát tác tử Minimax, Alpha-Beta Pruning, hàm Heuristic và Move Ordering.
+Dự án môn Trí tuệ Nhân tạo: Xây dựng trò chơi Caro 5x5 người-máy và khảo sát các tác tử **Minimax**, **Alpha-Beta Pruning**, **Heuristic** và **Move Ordering**.
 
-1. Cấu hình & Quy chuẩn kỹ thuật
+---
 
-- Kích thước bàn cờ: 5x5 (tổng cộng 25 ô cờ).
-- Điều kiện thắng: Đạt 4 quân liên tiếp (ngang, dọc, chéo chính, chéo phụ).
-- Luật biên (Hard Boundary): Bàn cờ phẳng có biên xác định từ hàng 0 đến 4, cột 0 đến 4. Ô vượt ra ngoài bàn cờ bị coi là bị chặn hoàn toàn, không tính cuộn vòng qua mép đối diện.
-- Tài liệu chi tiết luật chơi & mô hình hóa: Xem tại file docs/rules_and_spec.md.
+ Cấu trúc thư mục
 
-2. Cấu trúc thư mục dự án
-
+```text
 Project_AI_Caro/
-│
-├── config.py                  # Cấu hình hằng số (bàn 5x5, thắng 4, ký hiệu quân cờ)
-├── main.py                    # Menu chạy ứng dụng (chọn mở GUI hoặc CLI)
-├── requirements.txt           # Thư viện phụ thuộc (matplotlib, pandas, numpy)
-├── README.md                  # Hướng dẫn dự án và phân chia công việc
-│
-├── docs/
-│   └── rules_and_spec.md      # Thuyết minh kỹ thuật, luật cờ & không gian trạng thái
-│
-├── core/                      # [Thành viên 1] Game Engine & Bàn cờ
-│   ├── board.py               # Mô hình bàn cờ 5x5, luật thắng 4, kiểm tra biên cứng
-│   └── game.py                # Bộ điều khiển vòng lặp ván đấu, bấm giờ, kiểm tra timeout
-│
-├── agents/                    # [Interface chung & Các tác tử AI]
-│   ├── base_agent.py          # Interface chuẩn BaseAgent bắt buộc kế thừa
-│   ├── random_agent.py        # [Thành viên 1] Baseline ngẫu nhiên (hoàn tất 100%)
-│   ├── heuristic.py           # [Thành viên 2] Hàm lượng giá chuỗi mở / bị chặn
-│   ├── minimax_agent.py       # [Thành viên 2] Thuật toán Minimax giới hạn độ sâu
-│   ├── alphabeta_agent.py     # [Thành viên 2] Alpha-Beta Pruning + Move Ordering
-│   └── greedy_agent.py        # [Thành viên 3] Baseline tham lam 1 bước
-│
-├── ui/                        # [Thành viên 1] Giao diện người dùng
-│   ├── cli.py                 # Giao diện dòng lệnh (CLI console)
-│   └── gui.py                 # Giao diện đồ họa click chuột Tkinter đa luồng
-│
-└── experiments/               # [Thành viên 3] Thử nghiệm tự động & Biểu đồ
-    ├── runner.py              # Script chạy tự động tối thiểu 30 ván, đổi lượt, cố định seed
-    ├── plot.py                # Vẽ biểu đồ tỷ lệ thắng, số nút duyệt, thời gian chạy
-    └── results/               # Thư mục lưu kết quả match_results.csv và ảnh biểu đồ
+├── config.py                 # Cấu hình hằng số (5x5, thắng 4)
+├── main.py                   # Menu chạy ứng dụng (GUI / CLI)
+├── requirements.txt          # Thư viện (matplotlib, pandas, numpy)
+├── README.md                 # Hướng dẫn dự án
+├── docs/                     # Tài liệu thuyết minh kỹ thuật
+├── core/                     # Game Engine & Bàn cờ (Thành viên 1)
+├── agents/                   # Interface & Các tác tử AI (Thành viên 1, 2, 3)
+└── experiments/              # Thực nghiệm & Biểu đồ (Thành viên 3)
+ Phân công công việcThành viênNhiệm vụCác file chínhTrạng tháiThành viên 1Game Engine, Logic & Giao diệnconfig.py, core/, ui/, main.pyHoàn tất 100%Thành viên 2AI Core (Heuristic, Minimax, Alpha-Beta)heuristic.py, minimax_agent.py, alphabeta_agent.pyĐang thực hiệnThành viên 3Baseline Greedy & Thực nghiệmgreedy_agent.py, runner.py, plot.pyĐang thực hiện🚀 Hướng dẫn nhanhBash# 1. Cài đặt thư viện phụ thuộc
+pip install -r requirements.txt
 
-3. Phân chia công việc 3 thành viên
+# 2. Chạy ứng dụng (Menu chọn GUI / CLI)
+python main.py
 
-Thành viên 1: Game Engine, Logic & Giao diện (ĐÃ HOÀN TẤT 100%)
+# 3. Chạy thực nghiệm đấu tự động (30 ván)
+python experiments/runner.py
 
-- config.py: Định nghĩa các hằng số cấu hình tường minh.
-- core/board.py: Cài đặt logic bàn cờ 5x5, kiểm tra luật thắng 4, kiểm tra biên cứng, make_move, undo_move, get_neighbor_moves.
-- core/game.py: Vòng lặp ván cờ, tính thời gian suy nghĩ, phát hiện vượt ngưỡng thời gian (timeout).
-- agents/random_agent.py: Baseline ngẫu nhiên hoàn chỉnh.
-- ui/cli.py: Giao diện console hiển thị bàn cờ, lượt đi, thời gian, số nút duyệt.
-- ui/gui.py: Giao diện đồ họa Tkinter click chuột trực quan, mượt mà, chạy đa luồng không bị treo.
-- main.py: Menu chính tích hợp khởi chạy GUI và CLI.
-- docs/rules_and_spec.md: Tài liệu thuyết minh kỹ thuật phục vụ báo cáo.
-
-Thành viên 2: AI Core (Heuristic, Minimax & Alpha-Beta Pruning)
-
-Vào thư mục agents và hoàn thiện các khối TODO trong 3 file sau:
-
-1. agents/heuristic.py: Cài đặt hàm evaluate_board() chấm điểm thế cờ:
-  - Quét hàng ngang, cột dọc, 2 đường chéo.
-  - Nhận diện và tính điểm: chuỗi 4 thắng ngay, chuỗi 3 mở 2 đầu so với bị chặn 1 đầu, chuỗi 2 mở 2 đầu so với bị chặn 1 đầu.
-2. agents/minimax_agent.py: Hoàn thiện thuật toán đệ quy _minimax() có chặn độ sâu (depth-limited) và đếm số nút duyệt nodes_evaluated.
-3. agents/alphabeta_agent.py: Hoàn thiện thuật toán _alphabeta() cắt tỉa beta nhỏ hơn hoặc bằng alpha, tích hợp cơ chế order_moves() (sắp xếp ưu tiên ô trung tâm) và cờ bật/tắt Move Ordering để đo số nút duyệt giảm đi.
-
-Thành viên 3: Baseline Greedy, Thực nghiệm & Trực quan hóa
-
-Vào thư mục agents và experiments để hoàn thiện:
-
-1. agents/greedy_agent.py: Hoàn thiện logic tham lam 1 bước:
-  - Ưu tiên 1: Đánh nước thắng ngay nếu có.
-  - Ưu tiên 2: Chặn đối thủ nếu đối thủ sắp thắng ở lượt kế tiếp.
-  - Ưu tiên 3: Chọn nước đi có điểm Heuristic cao nhất ở độ sâu 1.
-2. experiments/runner.py: Cấu hình các cặp đấu thực nghiệm chạy tự động tối thiểu 30 ván (đổi bên đi trước, cố định seed):
-  - Cặp đấu 1: Random vs Minimax / Alpha-Beta.
-  - Cặp đấu 2: Greedy vs Alpha-Beta.
-  - Cặp đấu 3: Minimax vs Alpha-Beta (so sánh số nút duyệt).
-  - Cặp đấu 4: Alpha-Beta có Move Ordering vs Alpha-Beta không có Move Ordering.
-  - Cặp đấu 5: Khảo sát độ sâu (Depth 2 vs Depth 3 vs Depth 4).
-3. experiments/plot.py: Đọc dữ liệu từ file experiments/results/match_results.csv để vẽ các biểu đồ (tỉ lệ thắng/hòa/thua, thời gian trung bình, số nút duyệt) phục vụ slide và báo cáo.
-
-4. Quy chuẩn Interface chung (BaseAgent)
-
-Tất cả các Agent đều kế thừa lớp BaseAgent trong agents/base_agent.py:
-
-def get_move(self, board: Board) -> tuple[tuple[int, int] | None, dict]:
-    """
-    Trả về:
-    - (row, col): Tọa độ nước đi được chọn.
-    - metrics_dict: Dict chứa các chỉ số thực nghiệm:
-        {
-            "nodes_evaluated": int,   # Tổng số nút duyệt
-            "time_taken": float,      # Thời gian tính toán (giây)
-            "depth_reached": int      # Độ sâu đạt được
-        }
-    """
-
-5. Hướng dẫn chạy chương trình
-
-1. Cài đặt thư viện phụ thuộc:
-  pip install -r requirements.txt
-2. Khởi chạy Menu chính (Chọn GUI hoặc CLI):
-  python main.py
-3. Chạy trực tiếp Giao diện đồ họa (GUI Tkinter):
-  python ui/gui.py
-4. Chạy kịch bản thực nghiệm tự động 30 ván:
-  python experiments/runner.py
-5. Xuất biểu đồ phân tích số liệu:
-  python experiments/plot.py
+# 4. Xuất biểu đồ phân tích số liệu
+python experiments/plot.py
